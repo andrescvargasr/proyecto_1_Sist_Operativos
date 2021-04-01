@@ -17,5 +17,6 @@ int leer_de_teclado(int, char*);
 // Esta funcion es adecuada para que el valor retornado sea usado para las 
 // funciones de la familia execv*
 char** de_cadena_a_vector(char*);
+char** de_cadena_a_vector_a_texto(char*);
 
 #endif

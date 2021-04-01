@@ -5,8 +5,8 @@ basic_client_server: basic_client basic_server
 basic_client: tcp.o leercadena.o archivo.o
 	gcc -o basic_client basic_client.c tcp.o leercadena.o archivo.o
 
-basic_server: tcp.o
-	gcc -o basic_server basic_server.c tcp.o
+basic_server: tcp.o leercadena.o
+	gcc -o basic_server basic_server.c tcp.o leercadena.o
 
 file_client_server: file_client file_server
 

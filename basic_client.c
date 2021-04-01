@@ -60,14 +60,15 @@ int main(int argc, char* argv[])
 		if (pid < 0)
 		{
 			fprintf(stderr, "Error al crear proceso hijo\n");
-			exit(1);
+			exit(EXIT_FAILURE);
 		}
 
 		if (pid == 0)
 		{
-			char filename[BUFSIZ] = (char*)calloc(BUFSIZ,sizeof(char));
+			char *filename = (char*)calloc(BUFSIZ,sizeof(char));
 			assert(filename != NULL);
 			// Envio el comando
+			printf("Envío comando");
 			TCP_Write_String(sockfd, comando);
 			Recv_ACK(sockfd);
 			// Espero por el nombre del archivo que tendra la salida del comando

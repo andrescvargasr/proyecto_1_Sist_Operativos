@@ -53,3 +53,69 @@ char** de_cadena_a_vector(char* cadena) {
   resultado[i] = NULL;
   return resultado;
 }
+
+char** de_cadena_a_vector_a_texto (char* cadena) {
+  int i;
+  char *token;
+  char *delim = " ";
+  char** resultado;
+  char *archivo = ", > texto.txt";
+  
+  strcat(cadena, archivo);
+
+  resultado = (char**)malloc(sizeof(char*));
+  assert(resultado != NULL);
+  i = 0;
+  token = strtok(cadena,delim);
+  while ( token != NULL) {
+    int cad_longitud;
+    char **result_temp;
+    cad_longitud = strlen(token) + 1;
+    // Copiar token en la posicion 'i'
+    resultado[i] = strdup(token);
+    printf("|%s|\n",resultado[i]); fflush(stdout);
+    // En busca de la proxima cadena
+    token = strtok(NULL, delim);
+    i++;
+    result_temp = realloc(resultado, (i + 1)  * sizeof(*resultado));
+    assert(result_temp != NULL);
+    resultado = result_temp;
+  }
+
+  resultado[i] = NULL;
+
+  printf("Bien"); fflush(stdout);
+
+
+  // Nueva sección
+
+
+  char *delim2 = ",";
+  
+  resultado = (char**)malloc(sizeof(char*));
+  assert(resultado != NULL);
+  i = 0;
+  token = strtok(cadena,delim2);
+  while ( token != NULL) {
+    int cad_longitud;
+    char **result_temp;
+    cad_longitud = strlen(token) + 1;
+    // Copiar token en la posicion 'i'
+    resultado[i] = strdup(token);
+    printf("|%s|\n",resultado[i]); fflush(stdout);
+    // En busca de la proxima cadena
+    token = strtok(NULL, delim2);
+    i++;
+    result_temp = realloc(resultado, (i + 1)  * sizeof(*resultado));
+    assert(result_temp != NULL);
+    resultado = result_temp;
+  }
+
+  resultado[i] = NULL;
+
+  //printf("|%s|\n",resultado); fflush(stdout);
+
+  return resultado;
+
+
+}
