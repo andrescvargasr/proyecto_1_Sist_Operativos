@@ -21,17 +21,17 @@ void func(int sockfd)
 void variable_a_archivo(char *filename, char *file)
 {
 	FILE *out_file  = fopen(filename, "w+"); // read only 
-	printf("Almacenar archivo: %s\n",filename);
+	//printf("Almacenar archivo: %s\n",filename);
 
 	// test for files not existing. 
 	if (out_file == NULL) 
 	{   
-		printf("Error! Could not open file\n"); 
+		printf("Error! No se puede abrir el archivo.\n"); 
 		exit(-1); // must include stdlib.h 
 	}
 
 	fprintf(out_file, "%s", file);
-	printf("%s\n ", file );
+	//printf("%s\n ", file );
 
 	fclose(out_file);
 }
@@ -75,10 +75,12 @@ int main(int argc, char* argv[])
 		}
 		
 		// De lo contrario crear un nuevo proceso
+		// Se crea un proceso child para enviar el comando
+		// Mientras el proceso parent espera por la respuesta.
 		pid = fork();
 		if (pid < 0)
 		{
-			fprintf(stderr, "Error al crear proceso hijo\n");
+			fprintf(stderr, "Error al crear proceso hijo.\n");
 			exit(EXIT_FAILURE);
 		}
 
@@ -87,15 +89,15 @@ int main(int argc, char* argv[])
 			char *filename = (char*)calloc(BUFSIZ,sizeof(char));
 			assert(filename != NULL);
 			// Envio el comando
-			printf("Envío comando\n");
+			//printf("Envío comando\n");
 			TCP_Write_String(socket, comando);
 			Recv_ACK(socket);
-			printf("ACK recibido de envío comando.\n");
+			//printf("ACK recibido de envío comando.\n");
 			
 			// Espero por el nombre del archivo que tendra la salida del comando
 			TCP_Read_String(socket, filename, BUFSIZ);
-			printf("Nombre archivo recibido.\n");
-			printf("Envío ACK recibido de nombre archivo.\n");
+			//printf("Nombre archivo recibido.\n");
+			//printf("Envío ACK recibido de nombre archivo.\n");
 			Send_ACK(socket);
 			
 			// Recibo el archivo
@@ -103,23 +105,23 @@ int main(int argc, char* argv[])
 			bzero(file,BUFSIZ); 
 			TCP_Read_String(socket, file, BUFSIZ);
 			//TCP_Recv_File(socket, filename);
-			printf("Recibido archivo:\n");
-			printf("Envío ACK archivo\n");
+			//printf("Recibido archivo:\n");
+			//printf("Envío ACK archivo\n");
 			Send_ACK(socket);
 			// Muestra por pantalla el archivo
-			printf("Recibido archivo:\n%s\n", file);
+			//printf("Recibido archivo:\n%s\n", file);
 
 			// Almacenar variable a archivo
 			char p[BUFSIZ];
 			strcpy(p, filename);
-			printf("Entrar a crear archivo\n");
+			//printf("Entrar a crear archivo\n");
 			variable_a_archivo(p, file);
-			printf("Salida de crear archivo\n");
+			//printf("Salida de crear archivo\n");
 
 
-			//cat_archivo(file);
+			cat_archivo(p);
 			// Se borra el archivo
-			borrar_archivo(file);
+			borrar_archivo(p);
 			break;
 		}
 		else
