@@ -54,6 +54,8 @@ int main(int argc, char *argv[])
 
 		Send_ACK(connfd);
 
+		/*
+
 		// Se ejecuta el comando
 		pid_t pid, pid_temp;
 		pid = fork();
@@ -84,6 +86,7 @@ int main(int argc, char *argv[])
 		// y continua esperando por otro comando.
 		pid_temp = wait(NULL);
 		assert(pid == pid_temp);
+		*/
 	}
 	
 

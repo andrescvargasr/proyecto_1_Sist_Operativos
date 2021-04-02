@@ -20,7 +20,7 @@ void func(int sockfd)
 
 int main(int argc, char* argv[]) 
 { 
-	int sockfd, port; 
+	int socket, port; 
 	char *host;
 
 	char comando[BUFSIZ];
@@ -33,7 +33,7 @@ int main(int argc, char* argv[])
 	port = atoi(argv[2]);
 
 	printf("Looking to connect at <%s,%d>\n",host,port);
-	sockfd = TCP_Open(Get_IP(host),port);
+	socket = TCP_Open(Get_IP(host),port);
 
 	printf("Conexión exitosa\n");
 
@@ -50,7 +50,7 @@ int main(int argc, char* argv[])
 			printf("Adios...\n");
 
 			// close the socket 
-			close(sockfd); 
+			close(socket); 
 
 			break;
 		}
@@ -69,8 +69,10 @@ int main(int argc, char* argv[])
 			assert(filename != NULL);
 			// Envio el comando
 			printf("Envío comando");
-			TCP_Write_String(sockfd, comando);
-			Recv_ACK(sockfd);
+			TCP_Write_String(socket, comando);
+			Recv_ACK(socket);
+			printf("ACK recibido");
+			/*
 			// Espero por el nombre del archivo que tendra la salida del comando
 			TCP_Read_String(sockfd, filename, BUFSIZ);
 			Send_ACK(sockfd);
@@ -82,6 +84,7 @@ int main(int argc, char* argv[])
 			cat_archivo(filename);
 			// Se borra el archivo
 			borrar_archivo(filename);
+			*/
 			break;
 		}
 
