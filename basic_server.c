@@ -2,17 +2,20 @@
 #include <stdio.h>
 #include <strings.h>
 #include <unistd.h>
+#include <assert.h>
+#include <sys/wait.h>
 #include "tcp.h"
 #include "leercadena.h"
 
 #define MAX 80
 
 // Function designed for chat between client and server. 
-char *func(int sockfd, char comando) 
+void func(int sockfd, char *comando, char *p) 
 {
-	char *filename = "texto.txt";
-  char comando2[BUFSIZ];
-  strcpy(comando2, comando);
+	char t[BUFSIZ]  = "texto.txt";
+	p = t;
+  char *comando2 = comando;
+  //strcpy(comando2, comando);
   printf("%s\n",comando2);
   
   //execvp(vector[0],vector);
@@ -22,9 +25,13 @@ char *func(int sockfd, char comando)
   printf("%s\n",comando2);
 
   system(comando2);
-
-	return filename;
 } 
+
+void archivo_a_variable(char *p)
+{
+	FILE *in_file  = fopen(p, "r"); // read only 
+	printf("Acceder archivo: %s\n",p);
+}
 
 // Driver function 
 int main(int argc, char *argv[]) 
@@ -52,9 +59,11 @@ int main(int argc, char *argv[])
 		char ack[MAX_TCP_ACK] = {0};
 		TCP_Read_String(connfd, buff, MAX); 
 
+		printf("Envío ACK de recibo de comando.\n");
+
 		Send_ACK(connfd);
 
-		/*
+		
 
 		// Se ejecuta el comando
 		pid_t pid, pid_temp;
@@ -68,25 +77,37 @@ int main(int argc, char *argv[])
 		if (pid == 0) 
 		{
 			// Ejecución del comando
-			printf("Ejecución comando");
-			char *p = func(connfd, buff);
-			printf("Salida comando");
+			printf("Ejecución comando:\n");
+			char p[BUFSIZ] = "texto.txt";
+			func(connfd, buff, p);
+			printf("Salida comando: %s\n", p);
 			//Send_ACK(socket);
 			// Envio del nombre
 			TCP_Write_String(connfd, p);
-			Recv_ACK(socket);
+			printf("Envío nombre\n");
+			Recv_ACK(connfd);
+			printf("Recibido ACK nombre.\n");
+			
 			//Envio del archivo
+			archivo_a_variable(p);
+			/*
 			TCP_Write_String(connfd, buff);
 			//	Recv_ACK(connfd);
 			TCP_Send_File(connfd,buff);
+			*/
 			break;
 		}
+		else
+		{
+			// Proceso padre espera por terminación de nuevo proceso
+			// y continua esperando por otro comando.
+			pid_temp = wait(NULL);
+			assert(pid == pid_temp);
+		}
+		
 
-		// Proceso padre espera por terminación de nuevo proceso
-		// y continua esperando por otro comando.
-		pid_temp = wait(NULL);
-		assert(pid == pid_temp);
-		*/
+		
+		
 	}
 	
 

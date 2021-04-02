@@ -68,14 +68,17 @@ int main(int argc, char* argv[])
 			char *filename = (char*)calloc(BUFSIZ,sizeof(char));
 			assert(filename != NULL);
 			// Envio el comando
-			printf("Envío comando");
+			printf("Envío comando\n");
 			TCP_Write_String(socket, comando);
 			Recv_ACK(socket);
-			printf("ACK recibido");
-			/*
+			printf("ACK recibido de envío comando.\n");
+			
 			// Espero por el nombre del archivo que tendra la salida del comando
-			TCP_Read_String(sockfd, filename, BUFSIZ);
-			Send_ACK(sockfd);
+			TCP_Read_String(socket, filename, BUFSIZ);
+			printf("Nombre archivo recibido.\n");
+			printf("Envío ACK recibido de nombre archivo.\n");
+			Send_ACK(socket);
+			/*
 			// Recibo el archivo
 			printf("Archivo a recibir [%s]\n",filename);
 			TCP_Recv_File(sockfd, filename);
@@ -87,11 +90,16 @@ int main(int argc, char* argv[])
 			*/
 			break;
 		}
+		else
+		{
+			// Proceso padre espera por terminación de nuevo proceso
+			// y continua esperando por otro comando.
+			pid_temp = wait(NULL);
+			assert(pid == pid_temp);
+		}
+		
 
-		// Proceso padre espera por terminación de nuevo proceso
-		// y continua esperando por otro comando.
-		pid_temp = wait(NULL);
-		assert(pid == pid_temp);
+		
 		
 		
 	}
