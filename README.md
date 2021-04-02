@@ -1,6 +1,14 @@
 # Shell remoto
 
-En este repositorio se encuentran algunos códigos en C que pueden servir de apoyo al desarrollo de un shell remoto que sigue el esquema cliente/servidor. 
+En este repositorio se encuentra la solución de primer miniproyecto de Sistemas Operativos y Servicios de Red, dictada por el profesor John Sanabria, el cual desarrolla un shell remoto que sigue el esquema cliente/servidor. 
+
+Realizado por:
+
+- Maria Camila Montaño Polania.
+- Andres Camilo Vargas Román.
+
+---
+
 La siguiente gráfica muestra lo que se espera sea la interacción entre el shell cliente y el servidor. 
 
 <img src="figures/MiniShellRemoto.png" alt="Mini Shell Remoto Cliente/Servidor" width="650"/>
@@ -19,55 +27,61 @@ El proceso (padre) toma la salida del proceso hijo y la envía al lado del clien
 
 ---
 
-A continuación se da una descripción de diferentes funciones que le permitirán concentrarse en la lógica de su aplicación y obviar algunos detalles propios del lenguaje C.
+A continuación, se da una descripción de la ejecución del proyecto:
 
-## `archivo.c` y `archivo.h`
+## Vagrant
 
-Estos archivos contienen la definición de las funciones ([`archivo.h`](archivo.h)) y su correspondiente implementación ([`archivo.c`](archivo.c)).
-Al interior de [`archivo.h`](archivo.h) se encuntra una descripción corta de las funciones y de los parámetros que estas reciben. 
-Así mismo, el archivo [`archivo_main.c`](archivo_main.c) tiene un programa en C que genera una aplicación donde se muestra como se pueden usar las funciones definidas e implementadas en `archivo.h` y `archivo.c`, respectivamente.
+En el proyecto se emplea Vagrant y VBoxManage para crear una máquina virtual Ubunut Xenial que usa un núcleo de la CPU y 1024 MB de memoria.
 
-Para ver en operación las funciones se ejecuta el comando
+Para iniciar la máquina virtual, digite en la terminal:
 
-```
-make archivo
+```bash
+vagrant up
 ```
 
-Esta ejecución generará el aplicativo `archivo_main` que podrá ser ejecutado desde la línea de comandos escribiendo en esta `./archivo_main`.
+Una vez se inicie la máquina virtual, se accede a ella a través de SSH mediante el comando:
 
-## `leercadena.c` y `leercadena.h`
-
-Estos archivos contienen la definición de las funciones ([`leercadena.h`](leercadena.h)) y su correspondiente implementación ([`leercadena.c`](leercadena.c)).
-Al interior de [`leercadena.h`](leercadena.h) se encuntra una descripción corta de las funciones y de los parámetros que estas reciben. 
-Así mismo, el archivo [`leercadena_main.c`](leercadena_main.c) tiene un programa en C que genera una aplicación donde se muestra como se pueden usar las funciones definidas e implementadas en `leercadena.h` y `leercadena.c`, respectivamente.
-
-Para ver en operación las funciones se ejecuta el comando
-
-```
-make leercadena
+```bash
+vagrant ssh
 ```
 
-Esta ejecución generará el aplicativo `leercadena_main` que podrá ser ejecutado desde la línea de comandos escribiendo en esta `./leercadena_main`.
+Con el propósito de usar el modelo cliente/servidor, se recomienda en otro terminal, ejecutar el mismo comando, de modo que se acceda desde dos espacios de usuarios.
 
+## Repositorio
 
-## `tcp.c` y `tcp.h`
+Una vez se encuentre en la máquina virtual, se puede acceder a la carpeta del proyecto en ambas sesiones, mediante el comando:
 
-Estos archivos contienen la definición de las funciones ([`tcp.h`](tcp.h)) y su correspondiente implementación ([`tcp.c`](tcp.c)).
-Al interior de [`tcp.h`](tcp.h) se encuntra una descripción corta de las funciones y de los parámetros que estas reciben. 
+```
+cd proyecto_1_Sist_Operativos
+```
 
-Para evidenciar el uso de estas funciones se han desarrollado algunos ejemplos que muestran las funciones en operación.
+## `basic_client.c` y `basic_server.c`
 
-### `basic_client` y `basic_server` 
+En esta carpeta, se han creado los archivos principales del proyecto conocidos como `basic_client.c` y `basic_server.c` los cuales ejecutan el cliente y el servidor. Para usar estos archivos, primero se deben compilar y crear la aplicación, lo cual se hace empleando el comando
 
-Para ver en operación este ejemplo se debe ejecutar el comando `make basic_client_server` que se encarga de compilar los archivos objeto que requiere este aplicativo (`tcp.o`) y el cliente (`basic_client`) y el servidor (`basic_server`). 
+```bash
+make basic_client_server
+```
 
-Para ejecutar el servidor ejecute el comando `basic_server 12358`. 
+Este comando se encargará de crear todos los archivos *.o necesarios y hará en enlace que permitirá tener los ejecutables del proyecto.
 
-Abra otra terminal y en ella ejecute el cliente de la siguiente manera `./basic_client localhost 12358`.
+### Run `basic_client` y `basic_server` 
+
+Para ejecutar el servidor ejecute el comando:
+
+```bash
+./basic_server 12358
+``` 
+
+En la otra terminal ejecute el cliente de la siguiente manera:
+
+```bash
+./basic_client localhost 12358
+```
 
 El cliente envía la cadena `hola mundo` y esta es recibida por el servidor quien lo imprime en su pantalla.
 
-### `file_client` y `file_server` 
+<!--### `file_client` y `file_server` 
 
 Para ver en operación este ejemplo se debe ejecutar el comando `make file_client_server` que se encarga de compilar los archivos objeto que requiere este aplicativo (`tcp.o`) y el cliente (`file_client`) y el servidor (`file_server`). 
 
@@ -76,6 +90,7 @@ El servidor apenas reciba una solicitud, enviará el archivo `tcp.c` al cliente.
 
 Abra otra terminal y en ella ejecute el cliente de la siguiente manera `./file_client localhost 12358 demo.c`.
 Una vez se ejecute, el cliente recibirá el archivo del servidor y lo almacenará con el nombre `demo.c`.
+-->
 
 <!--
 ## Elementos que quedan pendientes
