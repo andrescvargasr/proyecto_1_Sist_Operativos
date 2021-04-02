@@ -18,12 +18,31 @@ void func(int sockfd)
 	TCP_Write_String(sockfd, buff); 
 } 
 
+void variable_a_archivo(char *filename, char *file)
+{
+	FILE *out_file  = fopen(filename, "w+"); // read only 
+	printf("Almacenar archivo: %s\n",filename);
+
+	// test for files not existing. 
+	if (out_file == NULL) 
+	{   
+		printf("Error! Could not open file\n"); 
+		exit(-1); // must include stdlib.h 
+	}
+
+	fprintf(out_file, "%s", file);
+	printf("%s\n ", file );
+
+	fclose(out_file);
+}
+
 int main(int argc, char* argv[]) 
 { 
 	int socket, port; 
 	char *host;
 
 	char comando[BUFSIZ];
+	char file[BUFSIZ];
 
 	if (argc != 3) {
 		printf("Uso: %s <host> <puerto>\n",argv[0]);
@@ -78,16 +97,29 @@ int main(int argc, char* argv[])
 			printf("Nombre archivo recibido.\n");
 			printf("Envío ACK recibido de nombre archivo.\n");
 			Send_ACK(socket);
-			/*
+			
 			// Recibo el archivo
 			printf("Archivo a recibir [%s]\n",filename);
-			TCP_Recv_File(sockfd, filename);
-			Send_ACK(sockfd);
+			bzero(file,BUFSIZ); 
+			TCP_Read_String(socket, file, BUFSIZ);
+			//TCP_Recv_File(socket, filename);
+			printf("Recibido archivo:\n");
+			printf("Envío ACK archivo\n");
+			Send_ACK(socket);
 			// Muestra por pantalla el archivo
-			cat_archivo(filename);
+			printf("Recibido archivo:\n%s\n", file);
+
+			// Almacenar variable a archivo
+			char p[BUFSIZ];
+			strcpy(p, filename);
+			printf("Entrar a crear archivo\n");
+			variable_a_archivo(p, file);
+			printf("Salida de crear archivo\n");
+
+
+			//cat_archivo(file);
 			// Se borra el archivo
-			borrar_archivo(filename);
-			*/
+			borrar_archivo(file);
 			break;
 		}
 		else
