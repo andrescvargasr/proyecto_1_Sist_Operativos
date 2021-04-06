@@ -33,6 +33,19 @@ A continuación, se da una descripción de la ejecución del proyecto:
 
 En el proyecto se emplea Vagrant y VBoxManage para crear una máquina virtual Ubunut Xenial que usa un núcleo de la CPU y 1024 MB de memoria.
 
+Antes de acceder, es necesario cambiar el usuario por el local, así que se debe acceder a esta carpeta y crear el usuario correspondiente:
+
+```bash
+vi .vagrant/machines/<machine_name>/virtualbox/creator_uid
+```
+
+Ejemplo, si el usuario que se creó en la máquina vagrant1 es UID = 1000, pero el actual es UID = 10, se debe escribir:
+
+```
+UID = 10
+```
+
+
 Para iniciar la máquina virtual, digite en la terminal:
 
 ```bash
@@ -51,9 +64,28 @@ Con el propósito de usar el modelo cliente/servidor, se recomienda en otro term
 
 Una vez se encuentre en la máquina virtual, se puede acceder a la carpeta del proyecto en ambas sesiones, mediante el comando:
 
+
+```bash
+cd /vagrant
 ```
+
+```bash
 cd proyecto_1_Sist_Operativos
 ```
+
+## Instalación de make y GCC
+
+Antes de poder compilar los archivos y generar un ejecutable, se deben intalar Make y GCC, de modo que los comandos se puedan efectuar. Para esto, se deben escribir las siguientes sentencias:
+
+
+```
+sudo apt update
+sudo apt-get install gcc
+sudo apt-get install make
+```
+
+Una vez intalados estos programas, podemos seguir con la compilación.
+
 
 ## `basic_client.c` y `basic_server.c`
 
