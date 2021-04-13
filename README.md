@@ -82,6 +82,26 @@ En la otra terminal ejecute el cliente de la siguiente manera:
 
 El cliente envía la cadena `hola mundo` y esta es recibida por el servidor quien lo imprime en su pantalla.
 
+### Comandos testeados
+
+Los siguientes comandos se pueden ejecutar en la Máquina Virtual con el fin de probar su funcionamiento:
+
+```bash
+ls
+```
+
+```bash
+cat <nombre_archivo>
+```
+
+```bash
+touch <nombre_archivo>
+```
+
+```bash
+rm <nombre_archivo>
+```
+
 <!--### `file_client` y `file_server` 
 
 Para ver en operación este ejemplo se debe ejecutar el comando `make file_client_server` que se encarga de compilar los archivos objeto que requiere este aplicativo (`tcp.o`) y el cliente (`file_client`) y el servidor (`file_server`). 
