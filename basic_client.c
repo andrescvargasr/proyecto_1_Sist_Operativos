@@ -30,8 +30,18 @@ void variable_a_archivo(char *filename, char *file)
 		exit(-1); // must include stdlib.h 
 	}
 
-	fprintf(out_file, "%s", file);
-	//printf("%s\n ", file );
+	char buffer[BUFSIZ];
+	bzero(buffer,BUFSIZ);
+	char buffer2[BUFSIZ];
+	bzero(buffer,BUFSIZ);
+	while (fgets(buffer, BUFSIZ, out_file) != NULL) {
+		strcat(buffer2, buffer);
+	}
+
+		strcpy(filename, buffer2);
+
+	//fprintf(out_file, "%s", file);
+	printf("%s\n ", filename );
 
 	fclose(out_file);
 }
@@ -103,8 +113,8 @@ int main(int argc, char* argv[])
 			// Recibo el archivo
 			printf("Archivo a recibir [%s]\n",filename);
 			bzero(file,BUFSIZ); 
-			TCP_Read_String(socket, file, BUFSIZ);
-			//TCP_Recv_File(socket, filename);
+			//TCP_Read_String(socket, file, BUFSIZ);
+			TCP_Recv_File(socket, filename);
 			//printf("Recibido archivo:\n");
 			//printf("Envío ACK archivo\n");
 			Send_ACK(socket);
@@ -112,16 +122,19 @@ int main(int argc, char* argv[])
 			//printf("Recibido archivo:\n%s\n", file);
 
 			// Almacenar variable a archivo
+			/*
 			char p[BUFSIZ];
 			strcpy(p, filename);
-			//printf("Entrar a crear archivo\n");
+			printf("Entrar a crear archivo\n");
 			variable_a_archivo(p, file);
 			//printf("Salida de crear archivo\n");
 
+			*/
 
-			cat_archivo(p);
+
+			cat_archivo(filename);
 			// Se borra el archivo
-			borrar_archivo(p);
+			borrar_archivo(filename);
 			break;
 		}
 		else

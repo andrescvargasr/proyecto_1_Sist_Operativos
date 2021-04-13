@@ -143,7 +143,8 @@ int TCP_Send_File(t_socket socket, char* filename) {
 	}
 	while (fgets(buffer, BUFSIZ, fp) != NULL) {
 		int n;
-		if ((n = send(socket, buffer, sizeof(buffer), 0)) == -1) {
+		//if ((n = send(socket, buffer, sizeof(buffer), 0)) == -1) {
+		if ((n = send(socket, buffer, BUFSIZ, 0)) == -1) {
 			fprintf(stderr, "Fallo en enviar datos archivo (TCP_Send_File) %s\n",strerror(errno));
 			exit(EXIT_FAILURE);
 		}
@@ -163,7 +164,7 @@ int TCP_Recv_File(t_socket socket, char* filename) {
 	int n;
 	char buffer[BUFSIZ];
 
-	fp = fopen(filename, "w");
+	fp = fopen(filename, "w+");
 	if (fp == NULL) {
 		fprintf(stderr, "Fallo en abrir archivo (TCP_Recv_File) %s\n",strerror(errno));
 		exit(EXIT_FAILURE);

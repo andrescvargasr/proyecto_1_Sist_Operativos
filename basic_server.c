@@ -15,14 +15,61 @@ char buff[BUFSIZ];
 void crear_archivo(int sockfd, char *comando, char *p) 
 {
 	char t[BUFSIZ]  = "texto.txt";
+	char output[3] = "-v";
+	output[strlen(output) - 1] = '\x0';
 	p = t;
   char *comando2 = comando;
+
+
+	char buffer[BUFSIZ];
+	bzero(buffer,BUFSIZ);
+
+	strcpy(buffer, comando2);
+
+
   //printf("%s\n",comando2);
   
   //execvp(vector[0],vector);
 
+	//char **vector;
+	//vector = de_cadena_a_vector(comando);
+	//printf("%s\n",vector[0]);
+	//printf("%ld\n",strlen(vector[0]));
+	//char size_0[BUFSIZ];
+	//bzero(size_0,BUFSIZ);
+	//strcpy(size_0,vector[0]);
+
+	// Verificar rm
+	char verifica_rm[2] = "rm";
+	//int comp = strncmp(size_0,verifica_rm,2);
+
+	int comp = strncmp(buffer,verifica_rm,2);
+	char *buffer2 = strndup(comando2, 2);
+	printf("Point: %s\n", buffer2);
+
+	// Si el comando es "rm", se agrega la bandera -v
+	if (comp == 0)
+	{
+		printf("Verifica rm\n");
+
+		char buffer3[BUFSIZ];
+
+		strcpy(buffer3, (char *)(buffer + 2));
+
+		printf("Buffer: %s\n", buffer3);
+		
+		
+		//fgets(buffer, BUFSIZ, comando2);
+		strcat(buffer2, " -v ");
+		//printf("Buffer 2: %s\n", buffer2);
+		strcat(buffer2, buffer3);
+		//printf("New Buffer: %s\n", buffer2);
+		strcpy(comando2, buffer2);
+
+	}
+	
   strcat(comando2," > texto.txt");
-  //printf("%s\n",comando2);
+  printf("%s\n",comando2);
   system(comando2);
 }
 
@@ -109,22 +156,23 @@ int main(int argc, char *argv[])
 				break;
 			}
 			char p[BUFSIZ] = "texto.txt";
+			char p_client[BUFSIZ] = "texto2.txt";
 			crear_archivo(connfd, buff, p);
 			//printf("Salida comando: %s\n", p);
 			//Send_ACK(socket);
 
 			// Envio nombre del archivo
-			TCP_Write_String(connfd, p);
+			TCP_Write_String(connfd, p_client);
 			//printf("Envío nombre\n");
 			Recv_ACK(connfd);
 			//printf("Recibido ACK nombre.\n");
 			
 			// Envio del archivo
 			bzero(buff,BUFSIZ);
-			archivo_a_variable(p);
+			//archivo_a_variable(p);
 			//printf("Imprimir archivo 2:\n\n\n%s\n", buff );
-			TCP_Write_String(connfd, buff);
-			//TCP_Send_File(connfd,p);
+			//TCP_Write_String(connfd, buff);
+			TCP_Send_File(connfd,p);
 			printf("Envío archivo\n");
 			Recv_ACK(connfd);
 			//printf("Recibido ACK archivo.\n");
