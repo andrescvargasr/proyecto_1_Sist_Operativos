@@ -51,8 +51,9 @@ Con el propósito de usar el modelo cliente/servidor, se recomienda en otro term
 
 Una vez se encuentre en la máquina virtual, se puede acceder a la carpeta del proyecto en ambas sesiones, mediante el comando:
 
-```
-cd proyecto_1_Sist_Operativos
+
+```bash
+cd /vagrant
 ```
 
 ## `basic_client.c` y `basic_server.c`
